@@ -1,0 +1,53 @@
+type Query
+
+type Ordering {
+  column: String
+  order: String
+}
+
+type Pagination {
+  total: Number
+  offset: Number
+  limit: Number
+  order: [Ordering]
+}
+
+type InventoryResponse {
+  owner: String
+  network: String
+  pagination: Pagination
+  nftId: [String]
+}
+
+type BoxCountResponse {
+  blockchain: String
+  phase: Number
+  total: Number
+}
+
+type UnboxResult {
+  type: String
+  nftId: String
+  nftBoxId: String
+  itemApplication: Number
+  itemEdition: Number
+  itemGeneration: Number
+  itemRareness: Number
+  itemType: Number
+  itemId: Number
+  itemSerial: Number
+  transactionHash: String
+}
+
+type UnboxResultResponse {
+  owner: String
+  network: String
+  pagination: Pagination
+  unbox: [UnboxResult]
+}
+
+extend type Query {
+  inventory(network: String, owner: String, pagination: Pagination): InventoryResponse
+  countBox(network: String, owner: String): [BoxCountResponse]
+  unboxResult(network: String, owner: String, pagination: Pagination): UnboxResultResponse
+}
