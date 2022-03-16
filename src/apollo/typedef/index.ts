@@ -19,6 +19,7 @@ export interface IPagination {
 export interface IInventoryRequest {
   network: TNetwork;
   owner: string;
+  tokenSymbol: string;
   pagination: Pick<IPagination, 'offset' | 'limit'>;
 }
 
@@ -131,7 +132,7 @@ export const typeDefApp = [
     }
 
     extend type Query {
-      inventory(network: String, owner: String, pagination: PaginationInput): InventoryResponse
+      inventory(network: String, owner: String, tokenSymbol: String, pagination: PaginationInput): InventoryResponse
       countBox(network: String, owner: String): BoxCountResponse
       unboxResult(network: String, owner: String, pagination: PaginationInput): UnboxResultResponse
     }

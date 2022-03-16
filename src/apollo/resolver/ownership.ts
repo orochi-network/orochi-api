@@ -7,24 +7,28 @@ import {
   IUnboxResultRequest,
   IUnboxResultResponse,
 } from '../typedef';
-import ModelOwnership, { IOwnership } from '../../model/ownership';
-import { IRecordList } from '@dkdao/framework';
+import ModelOwnership, { IOwnership, IOwnershipQuery } from '../../model/ownership';
+import { IModelCondition, IRecordList } from '@dkdao/framework';
 import ModelUnboxResult from '../../model/unbox-result';
 
 export const resolverOwnership = {
   Query: {
-    inventory: async (_: any, { network, owner, pagination }: IInventoryRequest): Promise<IInventoryResponse> => {
+    inventory: async (_: any, { network, owner, pagination, tokenSymbol }: IInventoryRequest): Promise<IInventoryResponse> => {
       const imOwnership = new ModelOwnership(network);
 
-      const { result, success } = await imOwnership.getNftList(
-        { ...(pagination || { offset: 0, limit: 1000 }), order: [] },
-        [
-          {
-            field: 'owner',
-            value: owner,
-          },
-        ],
-      );
+      const paginate = { ...(pagination || { offset: 0, limit: 1000 }), order: [] }
+      const conditions: IModelCondition<IOwnershipQuery>[] = [
+        {
+          field: 'owner',
+          value: owner,
+        },
+      ];
+
+      if (tokenSymbol) {
+        conditions.push({ field: 't.symbol', value: tokenSymbol });
+      }
+
+      const { result, success } = await imOwnership.getNftList(paginate, conditions);
 
       if (success) {
         const { total, offset, limit, order, records } = <IRecordList<IOwnership>>result;
