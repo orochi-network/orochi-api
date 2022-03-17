@@ -13,6 +13,10 @@ export interface IOwnership {
   createdDate: string;
 }
 
+export interface IOwnershipQuery extends IOwnership {
+  't.symbol': string;
+}
+
 export interface IOwnershipDetail extends IOwnership {
   tokenSymbol: string;
   tokenName: string;
@@ -59,10 +63,13 @@ export class ModelOwnership extends ModelMysqlBasic<IOwnership> {
 
   public async getNftList(
     pagination: IPagination = { offset: 0, limit: 1000, order: [] },
-    conditions?: IModelCondition<IOwnership>[],
-  ): Promise<IResponse<IOwnership>> {
-    return this.getListByCondition<IOwnership>(
-      this.attachConditions(this.getDefaultKnex().select('nftId'), conditions),
+    conditions?: IModelCondition<IOwnershipQuery>[],
+  ): Promise<IResponse<IOwnershipQuery>> {
+    return this.getListByCondition<IOwnershipQuery>(
+      this.attachConditions(
+        this.getKnex()(`${this.tableName} as o`).select('nftId').join('token as t', 't.id', 'o.tokenId'),
+        conditions as any,
+      ),
       pagination,
     );
   }
