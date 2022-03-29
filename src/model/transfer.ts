@@ -36,8 +36,28 @@ export class ModelTransfer extends ModelMysqlBasic<ITransfer> {
           )
           .join(`token as t`, 'e.tokenId', 't.id')
           .where('from', zeroAddress)
-          .where('t.symbol', 'DKI')
-        ,
+          .where('t.symbol', 'DKI'),
+        conditions,
+      ),
+      pagination,
+    );
+  }
+
+  public async getMigrationList(
+    pagination: IPagination = { offset: 0, limit: 20, order: [] },
+    conditions?: IModelCondition<ITransfer>[],
+  ): Promise<IResponse<ITransferDetail>> {
+    return this.getListByCondition<ITransferDetail>(
+      this.attachConditions(
+        this.getKnex()(`${this.tableName} as e`)
+          .select('*')
+          .select(
+            't.name as tokenName',
+            't.symbol as tokenSymbol',
+            't.decimal as tokenDecimal',
+            't.address as tokenAddress',
+          )
+          .join(`token as t`, 'e.tokenId', 't.id'),
         conditions,
       ),
       pagination,

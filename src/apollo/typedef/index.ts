@@ -101,6 +101,13 @@ export interface IBoxTransferRequest {
   pagination: Pick<IPagination, 'offset' | 'limit'>;
 }
 
+export interface IMigrationRequest {
+  network: TNetwork;
+  sender: string;
+  receiver: string;
+  pagination: Pick<IPagination, 'offset' | 'limit'>;
+}
+
 export interface IBoxTransferResponse {
   network: TNetwork;
   pagination: IPagination;
@@ -196,6 +203,7 @@ export const typeDefApp = [
       countBox(network: String, owner: String): BoxCountResponse
       unboxResult(network: String, owner: String, pagination: PaginationInput): UnboxResultResponse
       transfers(status: String, network: String, receiver: String, pagination: PaginationInput): TransferResponse
+      migrations(network: String, sender: String, receiver: String, pagination: PaginationInput): TransferResponse
     }
   `,
 ];
