@@ -97,6 +97,7 @@ export interface ITransferDetail extends ITransfer {
 export interface IBoxTransferRequest {
   network: TNetwork;
   status: number;
+  sender: string;
   receiver: string;
   pagination: Pick<IPagination, 'offset' | 'limit'>;
 }
@@ -195,7 +196,7 @@ export const typeDefApp = [
       inventory(network: String, owner: String, tokenSymbol: String, pagination: PaginationInput): InventoryResponse
       countBox(network: String, owner: String): BoxCountResponse
       unboxResult(network: String, owner: String, pagination: PaginationInput): UnboxResultResponse
-      transfers(status: String, network: String, receiver: String, pagination: PaginationInput): TransferResponse
+      transfers(status: String, network: String, sender: String, receiver: String, pagination: PaginationInput): TransferResponse
     }
   `,
 ];

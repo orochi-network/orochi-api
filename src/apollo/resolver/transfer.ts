@@ -9,7 +9,7 @@ import {
 
 export const resolverTransfer = {
     Query: {
-        transfers: async (_: any, { status, receiver, network, pagination }: IBoxTransferRequest): Promise<IBoxTransferResponse> => {
+        transfers: async (_: any, { status, sender, receiver, network, pagination }: IBoxTransferRequest): Promise<IBoxTransferResponse> => {
             const imNftTransfer = new ModelTransfer(network);
 
             const paginate = { ...(pagination || { offset: 0, limit: 1000 }), order: [] }
@@ -21,6 +21,14 @@ export const resolverTransfer = {
                     value: status,
                 });
             }
+
+            if (typeof sender === 'string' && utils.isAddress(sender)) {
+                conditions.push({
+                    field: 'from',
+                    value: sender,
+                });
+            }
+
             if (typeof receiver === 'string' && utils.isAddress(receiver)) {
                 conditions.push({
                     field: 'to',
