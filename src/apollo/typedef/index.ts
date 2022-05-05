@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express';
 
 export type TNft = 'card' | 'box';
 
-export type TNetwork = 'fantom' | 'polygon';
+export type TNetwork = 'fantom' | 'polygon' | 'binance';
 
 export interface IOrdering {
   column: string;

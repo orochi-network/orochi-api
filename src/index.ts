@@ -6,6 +6,9 @@ import logger from './helper/logger';
 
 Connector.connectByUrl(config.fantomDbUrl, 'fantom');
 Connector.connectByUrl(config.polygonDbUrl, 'polygon');
+if (config.nodeEnv=== 'production') {
+  Connector.connectByUrl(config.binaceDbUrl, 'binance');
+}
 
 const main = new ClusterApplication();
 

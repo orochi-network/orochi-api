@@ -4,6 +4,7 @@ interface IAppConfiguration {
   nodeEnv: string;
   fantomDbUrl: string;
   polygonDbUrl: string;
+  binaceDbUrl: string;
   serviceBindAddress: { host: string; port: number };
 }
 
@@ -34,6 +35,15 @@ const configLoader = Singleton<ConfigLoader>(
       type: 'string',
       location: 'any',
       require: true,
+      postProcess: (e) => e.trim(),
+      validator: (e) => /^mysql:\/\//i.test(e),
+      message: 'This configuration should look like: mysql://user:password@localhost:port/database',
+    },
+    {
+      name: 'binaceDbUrl',
+      type: 'string',
+      location: 'any',
+      require: false,
       postProcess: (e) => e.trim(),
       validator: (e) => /^mysql:\/\//i.test(e),
       message: 'This configuration should look like: mysql://user:password@localhost:port/database',
