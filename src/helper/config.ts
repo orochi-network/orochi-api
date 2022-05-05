@@ -43,7 +43,7 @@ const configLoader = Singleton<ConfigLoader>(
       name: 'binaceDbUrl',
       type: 'string',
       location: 'any',
-      require: true,
+      require: false,
       postProcess: (e) => e.trim(),
       validator: (e) => /^mysql:\/\//i.test(e),
       message: 'This configuration should look like: mysql://user:password@localhost:port/database',
